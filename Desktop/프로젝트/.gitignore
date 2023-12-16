@@ -1,0 +1,19 @@
+# 시스템 파일 및 폴더 무시
+Application Data/
+Cookies/
+Local Settings/
+My Documents/
+NetHood/
+PrintHood/
+Recent/
+SendTo/
+Templates/
+시작 메뉴/
+# 기타 프로젝트와 관련 없는 파일 및 폴더
+*.dat
+.bash_history
+.cache/
+.docker/
+.vscode/
+3D Objects/
+AppData/
