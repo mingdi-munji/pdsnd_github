@@ -48,21 +48,18 @@ def get_filters():
     print('Hello! Let\'s explore some US bikeshare data!')
     # TO DO: get user input for city (chicago, new york city, washington). HINT: Use a while loop to handle invalid inputs
     city = input("Please choose a city >>> (Chicago, New York City or Washington): ").lower()
-    # Prevent error if incorrect
     while city not in CITY_DATA:
         print("Please try again, name not recognized")
         city = input("Please choose a city >>> (Chicago, New York City or Washington): ").lower()
 
     # TO DO: get user input for month (all, january, february, ... , june)
     month = input("Please choose a month >>> (January, February, March, April, May, June or All): ").lower()
-    # Prevent error if incorrect
     while month not in MONTHS:
         print("Please try again, month not recognized")
         month = input("Please choose a month >>> (January, February, March, April, May, June or All): ").lower()
 
      # TO DO: get user input for day of week (all, monday, tuesday, ... sunday)
     day = input("Please choose a Day >>> (Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday or All): ").title()
-    # Prevent error if incorrect
     while day not in DAYS:
         print("Please try again, day not recognized")
         day = input("Please choose a day >>> (Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday or All): ").title()
@@ -93,14 +90,12 @@ def load_data(city, month, day):
     df = pd.read_csv(CITY_DATA[city])
 
     # Clean Data
-    #Columns unnamed = 0  drop
     df.drop(columns='Unnamed: 0', inplace=True)
 
     #Missing values
     df.fillna(method='ffill', inplace=True)
 
     # Change data types
-    # Change startime/ endtime to datetime format
     df['Start Time'] = pd.to_datetime(df['Start Time'])
 
     # convert 'End Time' column to datetime.
@@ -154,7 +149,6 @@ def time_stats(df, month, day):
 
 
     # TO DO: display the most common start hour
-    # First need to create columns for start time and start hour to find common start hour
     df['Start Hour'] = df['Start Time'].dt.hour
 
     # TO DO: display the most common start hour
@@ -225,8 +219,6 @@ def user_stats(df):
 
     print(f"The types of users by number are given below:\n\n{user_type}")
 
-    #Missing data for gender and birth year need to prevent error if user selects this filter
-
     try:
         gender = df['Gender'].value_counts()
         print(f"\nThe types of users by gender is available:\n\n{gender}")
@@ -260,7 +252,6 @@ def raw_data(df):
             i = i+5
 
         else:
-            # prevent errors
             break
 
 def main():
