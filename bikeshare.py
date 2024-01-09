@@ -15,13 +15,9 @@ from google.colab import drive
 drive.mount('/content/drive')
 
 """CITY_DATA, MONTHS, DAYS
-CITY_DATA: 세 도시의 데이터 파일 이름을 저장하는 딕셔너리입니다. 각 도시 이름이 키(key)이고, 해당 CSV 파일의 이름이 값(value)입니다.
 CITY_DATA: A dictionary that stores data file names for three cities. Each city name is a key, and the name of the CSV file is a value.
 
-MONTHS: 분석할 수 있는 월(month)의 목록입니다. 'all' 옵션은 모든 월을 포함합니다.
 MONTHS: A list of months that can be analyzed. The 'all' option covers all months.
-
-DAYS: 분석할 수 있는 요일(day)의 목록입니다. 'All' 옵션은 모든 요일을 포함합니다.
 DAYS: A list of days you can analyze. The 'All' option covers all days of the week.
 """
 
@@ -35,13 +31,8 @@ MONTHS = ['january', 'february', 'march', 'april', 'may', 'june', 'july','august
 DAYS = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday', 'All']
 
 """get_filters()
-사용자에게 도시, 월, 요일을 입력받아 분석할 데이터의 필터를 설정합니다.
 Enter the city, month, and day of the week from the user to set the filter for the data to be analyzed.
-
-입력받은 값들은 소문자 또는 타이틀 케이스로 변환되어 올바른 형식으로 처리됩니다.
 The values entered are converted to lowercase or title cases and processed in the correct format.
-
-잘못된 입력을 방지하기 위해 while 루프를 사용하여 사용자가 유효한 값을 입력할 때까지 반복 요청합니다.
 To prevent incorrect input, use the while loop to repeat the request until the user enters a valid value.
 """
 
@@ -57,21 +48,18 @@ def get_filters():
     print('Hello! Let\'s explore some US bikeshare data!')
     # TO DO: get user input for city (chicago, new york city, washington). HINT: Use a while loop to handle invalid inputs
     city = input("Please choose a city >>> (Chicago, New York City or Washington): ").lower()
-    # Prevent error if incorrect
     while city not in CITY_DATA:
         print("Please try again, name not recognized")
         city = input("Please choose a city >>> (Chicago, New York City or Washington): ").lower()
 
     # TO DO: get user input for month (all, january, february, ... , june)
     month = input("Please choose a month >>> (January, February, March, April, May, June or All): ").lower()
-    # Prevent error if incorrect
     while month not in MONTHS:
         print("Please try again, month not recognized")
         month = input("Please choose a month >>> (January, February, March, April, May, June or All): ").lower()
 
      # TO DO: get user input for day of week (all, monday, tuesday, ... sunday)
     day = input("Please choose a Day >>> (Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday or All): ").title()
-    # Prevent error if incorrect
     while day not in DAYS:
         print("Please try again, day not recognized")
         day = input("Please choose a day >>> (Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday or All): ").title()
@@ -79,15 +67,10 @@ def get_filters():
     print('-'*40)
     return city, month, day
 
-"""데이터 로딩 및 전처리 [Data loading and preprocessing]
-
+"""[Data loading and preprocessing]
 load_data(city, month, day)
 
-선택된 도시의 데이터를 CSV 파일에서 읽어와 판다스 데이터프레임으로 변환합니다.
 Reads the data from the selected city from a CSV file and converts it into a Pandas data frame.
-
-데이터를 정리하고, 필요한 새로운 열(예: 월, 요일)을 추가합니다.
-사용자가 선택한 월과 요일에 따라 데이터를 필터링합니다.
 Clean up the data and add new columns (for example, Monday and Day).
 Filters data according to the month and day of the week selected by the user.
 """
@@ -107,14 +90,12 @@ def load_data(city, month, day):
     df = pd.read_csv(CITY_DATA[city])
 
     # Clean Data
-    #Columns unnamed = 0  drop
     df.drop(columns='Unnamed: 0', inplace=True)
 
     #Missing values
     df.fillna(method='ffill', inplace=True)
 
     # Change data types
-    # Change startime/ endtime to datetime format
     df['Start Time'] = pd.to_datetime(df['Start Time'])
 
     # convert 'End Time' column to datetime.
@@ -138,18 +119,10 @@ def load_data(city, month, day):
     return df
 
 """
-
-통계 분석 함수들
-time_stats(df, month, day)
-가장 흔한 여행 월, 요일, 시간을 계산합니다.
-# 코드로 형식 지정됨
-
 statistical analysis functions
 time_stats(df, month, day)
 Calculate the most common travel month, day, and time.
 # Formatted as code
-
-
 """
 
 def time_stats(df, month, day):
@@ -176,7 +149,6 @@ def time_stats(df, month, day):
 
 
     # TO DO: display the most common start hour
-    # First need to create columns for start time and start hour to find common start hour
     df['Start Hour'] = df['Start Time'].dt.hour
 
     # TO DO: display the most common start hour
@@ -187,23 +159,17 @@ def time_stats(df, month, day):
     print('-'*40)
 
 """station_stats(df)
-가장 인기 있는 출발역과 도착역, 그리고 여행 경로를 계산합니다.
-데이터프레임을 통해 자전거 공유 서비스의 인기 있는 출발역, 도착역, 그리고 여행 경로에 대한 통계를 제공합니다. 이를 통해 사용자는 서비스의 이용 패턴을 더 잘 이해할 수 있습니다.
 Calculate the most popular departure and arrival stations, and travel routes.
 The data frame provides statistics on the popular departure, arrival, and travel routes of the bike-sharing service. This allows users to better understand the service's usage patterns.
 trip_duration_stats(df)
 
-총 여행 시간과 평균 여행 시간을 계산합니다.
-자전거 공유 데이터에서 여행의 총 시간과 평균 시간을 계산하는 기능을 합니다. 이 함수는 판다스 데이터프레임 df를 입력으로 받아, 해당 데이터프레임에서 여행 시간과 관련된 통계를 계산
 Calculate the total travel time and the average travel time.
 It functions to calculate the total time and average time of the trip from the bike-sharing data. This function takes the Pandas data frame df as input and calculates statistics related to the travel time from that data frame
 
 user_stats(df)
 Provides statistics on user type, gender, and year of birth. It is responsible for calculating and outputting user-related statistics from bike-sharing data. The function takes the pandas data frame df as input, and calculates various user statistics from that data frame.
 
-원시 데이터 표시
 raw_data(df)
-사용자가 원할 경우, 데이터의 원시 행을 5개씩 표시합니다.데이터프레임 df에서 원시 데이터(raw data)의 일부를 보여주는 기능을 합니다. 이 함수는 사용자에게 원시 데이터를 보고 싶은지 묻고, 'yes'라고 대답하면 데이터프레임의 일부를 출력합니다. 사용자가 더 이상 데이터를 보고 싶지 않을 때까지 이 과정을 반복
 If the user wants it, it displays 5 raw rows of data. It functions to show part of the raw data in the data frame df. This function asks the user if they want to see the raw data, and outputs part of the data frame when they answer 'yes'. Repeat this process until the user no longer wants to see the data
 """
 
@@ -219,21 +185,10 @@ def station_stats(df):
      # TO DO: display most commonly used end station
     print('The Most Commonly used End Station is: ' , df['End Station'].mode()[0])
 
-    #이 함수는 df라는 이름의 데이터프레임을 매개변수로 받습니다.
-    # 이 데이터프레임에는 자전거 공유 서비스의 여행 데이터가 들어 있습니다.
-    # df['Start Station']은 모든 여행의 출발역을 나타내는 열
-    # mode()[0] 메소드는 이 열에서 가장 자주 나타나는 값을 찾습니다. 즉, 가장 인기 있는 출발역을 찾는 데 사용
-    #df['End Station']은 모든 여행의 도착역을 나타내는 열입니다.
-    # .mode()[0] 메소드를 사용하여 가장 자주 나타나는 도착역, 즉 가장 인기 있는 도착역을 찾습니다.
-    #  데이터프레임이나 시리즈에서 가장 자주 나타나는 값을 찾는 데 사용. '최빈값(mode)'이라고 합니다.
-    # 여기서 .mode() 함수는 최빈값을 찾고, [0]은 그 중 첫 번째 값을 선택합니다.
-
    # TO DO: display most frequent combination of start station and end station
     df['journey'] = df['Start Station'] + " to " + df['End Station']
     print('The Most Frequent Trip from: ', df['journey'].mode()[0])
 
-#df['Start Station']과 df['End Station']을 결합하여 각 여행의 출발역과 도착역을 나타내는 새로운 열 df['journey']를 만듭니다.
-# .mode()[0] 메소드를 사용하여 가장 자주 나타나는 여행 경로, 즉 가장 인기 있는 여행 경로를 찾습니다.
     print("\nThis took %s seconds." % (time.time() - start_time))
     print('-'*40)
 
@@ -244,20 +199,12 @@ def trip_duration_stats(df):
     print('\nCalculating Trip Duration...\n')
     start_time = time.time()
 
-    #sum() 메소드는 이 열의 모든 값을 합산합니다.
-    # 즉, 데이터셋에 있는 모든 여행의 총 지속 시간을 계산합니다.
-    # 결과는 초 단위로 출력
     # TO DO: display total travel time / sum = total
     print('The Total Travel Time is: ', df['Trip Duration'].sum(), "'sec")
 
-
-#mean() 메소드는 이 열의 평균 값을 계산합니다.
-#즉, 모든 여행의 평균 지속 시간을 찾습니다.
-#결과는 정수로 변환되어 초 단위로 출력
     # TO DO: display mean travel time / mean = average
     print('The Mean Travel Time is: ', int(df['Trip Duration'].mean()), "'sec")
 
-#함수의 실행 시간을 계산하고 출력
     print("\nThis took %s seconds." % (time.time() - start_time))
     print('-'*40)
 
@@ -268,18 +215,9 @@ def user_stats(df):
     print('\nCalculating User Stats...\n')
     start_time = time.time()
 
-#df['User Type']은 각 여행을 한 사용자의 유형(예: 일반 사용자, 구독자 등)을 나타내는 열
-#value_counts() 메소드는 이 열의 각 값(사용자 유형)이 몇 번 나타나는지 계산합니다. 즉, 각 사용자 유형의 빈도수
-
     user_type = df['User Type'].value_counts()
 
     print(f"The types of users by number are given below:\n\n{user_type}")
-
-    #Missing data for gender and birth year need to prevent error if user selects this filter
-#df['Gender'] 열은 사용자의 성별을 나타냅니다.
-#value_counts() 메소드를 사용하여 각 성별의 빈도수를 계산합니다.
-#try-except 블록은 'Gender' 열이 데이터에 없는 경우(예: 데이터셋에 성별 데이터가 포함되지 않은 경우)를 처리합니다.
-#성별 데이터가 없으면, 적절한 메시지를 출력
 
     try:
         gender = df['Gender'].value_counts()
@@ -288,7 +226,6 @@ def user_stats(df):
         print("\nThere is no 'Gender' data in this file.")
 
     # TO DO: Display earliest, most recent, and most common year of birth / earliest = min, recent = max, common = mode
-   #min(), max(), mode()[0] 메소드를 사용하여 가장 이른, 가장 최근, 그리고 가장 흔한 출생 연도
     try:
         earliest = int(df['Birth Year'].min())
         recent = int(df['Birth Year'].max())
@@ -304,14 +241,6 @@ def user_stats(df):
 def raw_data(df):
     """ Displays 5 lines of raw data at a time when yes is selected."""
     # Create index and increase by 5
-    #i는 데이터프레임에서 보여줄 행의 시작 인덱스를 나타냅니다. 초기값은 1로 설정
-    i = 1
-
-    #while True 루프는 사용자가 'no'라고 입력할 때까지 계속 실행됩니다.
-    #input() 함수를 사용하여 사용자에게 데이터를 더 볼지 묻습니다.
-    #사용자가 'yes'라고 대답하면, df[i:i+5]를 통해 데이터프레임의 i번째 행부터 i+4번째 행까지 총 5행을 출력합니다.
-    #그 후 i의 값을 5 증가시켜 다음 번에 다음 5행을 보여줄 수 있도록 합니다.
-    #사용자가 'yes'가 아닌 다른 것을 입력하면, break 문을 통해 루프를 종료합니다
 
     while True:
         rawdata = input('\nWould you like to see 5 lines of raw data? Enter yes or no.\n')
@@ -323,7 +252,6 @@ def raw_data(df):
             i = i+5
 
         else:
-            # prevent errors
             break
 
 def main():
@@ -343,9 +271,3 @@ def main():
 
 if __name__ == "__main__":
 	main()
-
-"""메인 함수
-main()
-이 모든 기능을 조정하고 사용자가 프로그램을 다시 시작하거나 종료할 수 있게 합니다.
-이 코드는 사용자 입력을 기반으로 데이터를 필터링하고, 자전거 공유 서비스에 대한 다양한 통계를 계산하여 제공합니다
-"""
