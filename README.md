@@ -7,6 +7,7 @@ American Bikeshare Project
 
 ### Description
 This project explores bike share data in U.S. cities (Chicago, New York City, Washington) to analyze bicycle usage patterns and trends. It uses Python and libraries like Pandas and NumPy to process and analyze data, providing insights into travel times, popular stations, and user statistics.
+You can receive insights on peak times, top stations, trip durations, and user profiles by inputting city, month, and day data.
 
 ### Files used
 - chicago.csv
