@@ -1,0 +1,9 @@
+button { background-color: rgb(255, 233, 237); color:palevioletred;
+    border: palevioletred dashed 2px; border-radius: 10px;
+    width:80px; height:60px; text-align: center; font-size: 19px; font-weight: 600;}
+
+table {border: palevioletred solid 2px; border-radius: 3px;
+    background-color: rgb(254, 248, 249);}
+
+th {background-color: white; width: 20px; height: 20px; font-size: 25px;border: palevioletred solid 2px;
+color:rgb(151, 60, 90)  }

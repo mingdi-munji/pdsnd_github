@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<title>Document</title>
+<link rel="stylesheet" href="style.css">
+<script type="text/javascript" src="todo.js"></script>
+</head>
+<body>
+    <h4>To-do List</h4>
+    <div class="todo-container">
+    <h1>Todo</h1>
+    <div id="inputField">
+    <script>
+        function keyCodeCheck () {
+        console.log(event)
+        }
+        </script>
+    <input type="text" id="todoInput" placeholder="할 일 추가하기"
+    onkeydown="keyCodeCheck()">
+    <input type="button" id="button" value="+" onClick="createTodo()">
+    
+    <ul id="todoList">
+    </ul>
+
+    <span></span>
+    <span></span>
+</button>
+</div>
+</div>
+</body>
+</html>

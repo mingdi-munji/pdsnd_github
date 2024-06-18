@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>현재 위치 및 날씨 정보</title>
+<style>        
+    body { text-align: center; background-color: white; }
+    h3{padding:10px; font-size: larger;}
+    body {font-size: large;}
+</style>
+</head>
+
+<body>
+<h3>현재 위치 및 날씨 출력</h3>
+<hr>
+<div id="msg">이곳에 위치 정보 출력</div>
+<div id="weather">날씨 정보 로딩 중...</div>
+<script>
+const apiKey = '77394a2e8a441f7bbc2756f3b7fe6395';
+
+if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(success, error);
+} else {
+    alert("이 브라우저에서는 위치 정보를 지원하지 않습니다.");
+}
+
+function success(position) {
+    const lat = position.coords.latitude.toPrecision(6);
+    const lon = position.coords.longitude.toPrecision(6);
+    const acc = position.coords.accuracy;
+
+    fetchWeather(lat, lon);
+    updateTime(lat, lon, acc);
+    setInterval(() => updateTime(lat, lon, acc), 1000);
+}
+
+function error(err) {
+    console.error(`ERROR(${err.code}): ${err.message}`);
+    document.getElementById("msg").innerHTML = `위치 정보를 가져올 수 없습니다: ${err.message}`;
+}
+
+function updateTime(lat, lon, acc) {
+    const now = new Date().toLocaleString("ko-KR", {timeZone: "Asia/Seoul"});
+    const text = `<br>현재 시간: ${now}<br>현재 위치: 위도 ${lat}°, 경도 ${lon}°<br>정확도: ${acc}m`;
+    document.getElementById("msg").innerHTML = text;
+}
+
+function fetchWeather(lat, lon) {
+    const url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}&units=metric&lang=kr`;
+    fetch(url)
+    .then(response => {
+        if (!response.ok) {
+            throw new Error(`응답 오류: ${response.statusText}`);
+        }
+        return response.json();
+    })
+    .then(data => {
+        const weather = data.weather[0].description;
+        const temp = data.main.temp;
+        let emoji = ""; // 이모티콘을 저장할 변수 초기화
+        if (temp < 0) {
+            emoji = "추워요🥶 <br> 따뜻하게 입고 나가세요!";
+        } else if (temp < 10) {
+            emoji = "조금 추워요😬 <br> 겉옷을 챙기는게 좋을거같아요!";
+        } else if (temp < 20) {
+            emoji = " 적당해요😄 <br> 산책가기 좋은날이겠네요!";
+        } else if (temp < 30) {
+            emoji = "조금 더워요😥 <br> 밖에서 다니기에는 힘들거같아요";
+        } else if (temp >= 35) {
+            emoji = "더워요🥵 <br> 집에서 있는게 좋을거같네요";
+        }
+        document.getElementById('weather').innerHTML = `날씨: ${weather} ,온도: ${temp}°C <br><br><hr><br> 오늘 기온은 "${temp}°C, ${emoji}"`;
+    })
+    .catch(error => {
+        console.error('날씨 정보를 불러오는 데 실패했습니다.', error);
+        document.getElementById('weather').innerHTML = `날씨 정보를 불러오는데 실패했습니다: ${error.message}`;
+    });
+}
+
+
+</script>
+</body>
+</html>

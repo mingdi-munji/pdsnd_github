@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Calculator</title> 
+    <style>
+        button {
+            border-radius: 10px;
+            width: 80px;
+            height: 60px;
+            text-align: center;
+            font-size: 19px;
+            font-weight: 600;
+            cursor: pointer;
+            margin: 5px; /* 각 버튼 사이의 간격 조정 */
+            background-color: rgb(255, 208, 216);
+        }
+        button:active {
+        background-color: rgb(255, 140, 159);
+        color:white;
+        }
+        th {
+            width: 20px;
+            height: 20px;
+            font-size: 25px;
+            border: 2px solid black; /* 테이블 헤더의 테두리 스타일 조정 */
+            background-color: white;
+        }
+        table { /* 테이블 테두리 겹치기 없애기 */
+            border: 6px solid rgb(214, 147, 163);
+            margin: auto; /* 테이블을 페이지 중앙에 위치 */
+            padding:5px;
+            border-radius: 5px;
+            background-color: rgb(255, 244, 251);
+        }
+        body {text-align: center; background-color: white;}
+
+    </style>
+</head>
+<body>
+    <div id="calculator">
+        <h4>Calculator</h4>
+        <table border="1">
+            <tr><th colspan="4"><span id="resultDisplay">0</span></th></tr>
+            <tr>
+                <td><button onclick="clearDisplay()">C</button></td>
+                <td><button onclick="inputParentheses()">()</button></td>
+                <td><button onclick="inputPercent()">%</button></td>
+                <td><button onclick="inputOperator('/')">/</button></td>
+            </tr>
+            <tr>
+                <td><button onclick="inputDigit('7')">7</button></td>
+                <td><button onclick="inputDigit('8')">8</button></td>
+                <td><button onclick="inputDigit('9')">9</button></td>
+                <td><button onclick="inputOperator('*')">&times;</button></td>
+            </tr>
+            <tr>
+                <td><button onclick="inputDigit('4')">4</button></td>
+                <td><button onclick="inputDigit('5')">5</button></td>
+                <td><button onclick="inputDigit('6')">6</button></td>
+                <td><button onclick="inputOperator('-')">-</button></td>
+            </tr>
+            <tr>
+                <td><button onclick="inputDigit('1')">1</button></td>
+                <td><button onclick="inputDigit('2')">2</button></td>
+                <td><button onclick="inputDigit('3')">3</button></td>
+                <td><button onclick="inputOperator('+')">+</button></td>
+            </tr>
+            <tr>
+                <td><button onclick="toggleSign()">+/-</button></td>
+                <td><button onclick="inputDigit('0')">0</button></td>
+                <td><button onclick="inputDecimal()">.</button></td>
+                <td><button onclick="calculateResult()">=</button></td>
+            </tr>
+        </table>
+    </div>
+    <script src="calculator.js"></script>
+</body>
+</html>
